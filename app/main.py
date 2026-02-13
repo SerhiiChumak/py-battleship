@@ -28,13 +28,13 @@ class Ship:
     def create_decks(start: tuple, end: tuple) -> List[Deck]:
         decks = []
         if start[0] == end[0]:  # Horizontal
-            r = start[0]
+            first_row = start[0]
             for col in range(min(start[1], end[1]), max(start[1], end[1]) + 1):
-                decks.append(Deck(r, col))
+                decks.append(Deck(first_row, col))
         elif start[1] == end[1]:  # Vertical
-            c = start[1]
+            first_col = start[1]
             for row in range(min(start[0], end[0]), max(start[0], end[0]) + 1):
-                decks.append(Deck(row, c))
+                decks.append(Deck(row, first_col))
         return decks
 
     def fire(self, row: int, column: int) -> str:
