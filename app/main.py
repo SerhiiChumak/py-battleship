@@ -27,17 +27,15 @@ class Ship:
     @staticmethod
     def create_decks(start: tuple, end: tuple) -> List[Deck]:
         decks = []
-        if start[0] == end[0]:  # Horizontal ship
-            for col in range(start[1], end[1] + 1):
-                decks.append(Deck(start[0], col))
-        elif start[1] == end[1]:  # Vertical ship
-            for row in range(start[0], end[0] + 1):
-                decks.append(Deck(row, start[1]))
+        if start[0] == end[0]:  # Horizontal
+            r = start[0]
+            for col in range(min(start[1], end[1]), max(start[1], end[1]) + 1):
+                decks.append(Deck(r, col))
+        elif start[1] == end[1]:  # Vertical
+            c = start[1]
+            for row in range(min(start[0], end[0]), max(start[0], end[0]) + 1):
+                decks.append(Deck(row, c))
         return decks
-
-    # @staticmethod
-    # def get_deck(row: int, column: int) -> Deck:
-    #     return Deck(row, column)
 
     def fire(self, row: int, column: int) -> str:
         for deck in self.decks:
@@ -54,7 +52,7 @@ class Ship:
 
 
 class Battleship:
-    def __init__(self, ships: list[Ship]) -> None:
+    def __init__(self, ships: list[tuple]) -> None:
         self.field = [["~" for _ in range(10)] for _ in range(10)]
         self.ships = [Ship(start, end) for start, end in ships]
         self.place_ships()
@@ -69,11 +67,17 @@ class Battleship:
     def fire(self, location: tuple) -> str:
         row, col = location
         for ship in self.ships:
-            result = ship.fire(*location)
-            if result != "Miss!":
-                self.field[row][col] = "*" if result == "Hit!" else "x"
+            result = ship.fire(row, col)
+
+            if result == "Hit!":
+                self.field[row][col] = "*"
                 return result
-        # self.field[row][col] = "o"
+
+            if result == "Sunk!":
+                for deck in ship.decks:
+                    self.field[deck.row][deck.column] = "x"
+                return result
+
         return "Miss!"
 
     def print_field(self) -> None:
