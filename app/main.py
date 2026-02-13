@@ -35,9 +35,9 @@ class Ship:
                 decks.append(Deck(row, start[1]))
         return decks
 
-    @staticmethod
-    def get_deck(row: int, column: int) -> Deck:
-        return Deck(row, column)
+    # @staticmethod
+    # def get_deck(row: int, column: int) -> Deck:
+    #     return Deck(row, column)
 
     def fire(self, row: int, column: int) -> str:
         for deck in self.decks:
@@ -73,7 +73,7 @@ class Battleship:
             if result != "Miss!":
                 self.field[row][col] = "*" if result == "Hit!" else "x"
                 return result
-        self.field[row][col] = "o"
+        # self.field[row][col] = "o"
         return "Miss!"
 
     def print_field(self) -> None:
